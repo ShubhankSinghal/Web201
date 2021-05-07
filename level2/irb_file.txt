@@ -1,0 +1,26 @@
+shubhanksinghal@ubuntu:~/Documents/Web201$ irb
+2.6.3 :001 > "abcd"
+ => "abcd"
+2.6.3 :002 > "abcd".capitalize
+ => "Abcd"
+2.6.3 :003 > "abcd".upcase
+ => "ABCD"
+2.6.3 :004 > "abcd".downcase
+ => "abcd"
+2.6.3 :005 > "AbCd".downcase
+ => "abcd"
+2.6.3 :007 > [10,56,45,23,56].sum / 5
+ => 38
+2.6.3 :008 > nums = [10,56,45,23,56]
+ => [10, 56, 45, 23, 56]
+2.6.3 :009 > nums.sum / nums.length
+ => 38
+2.6.3 :010 > def avg(nums)
+2.6.3 :011?>   nums.sum / nums.length
+2.6.3 :012?>   end
+ => :avg
+2.6.3 :013 > avg([10,56,23,45,56])
+ => 38
+ctrl + R  for reverse search
+up and down arrow for last command
+ctrl+d or exit to quit
