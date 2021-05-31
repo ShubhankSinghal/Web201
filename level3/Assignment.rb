@@ -76,7 +76,8 @@ class TodosList
 
   # transform the data
   def to_displayable_list
-    @todos.map { |x| x.to_displayable_string }
+    temp = @todos.map { |x| x.to_displayable_string }
+    temp.join("\n")
   end
 end
 
