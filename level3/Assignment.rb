@@ -41,16 +41,9 @@ class Todo
 
   # to format data into required string
   def to_displayable_string
-    str = ""
-    if completed?
-      str = "[X] #{text?}"
-    else
-      str = "[ ] #{text?}"
-    end
-    if due_date? != Date.today
-      str = "#{str} #{due_date?}"
-    end
-    return str
+    display_status = completed? ? "[X]" : "[ ]"
+    display_date = due_today? ? nil : due_date?
+    "#{display_status} #{text?} #{display_date}"
   end
 end
 
