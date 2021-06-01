@@ -21,51 +21,45 @@ dns_raw = File.readlines("zone")
 # FILL YOUR CODE HERE
 
 # Function to parse zone file data
-def parse_dns(data)
+def parse_dns(raw)
+  raw
+    .reject { |line| line.strip == "" }
+    .reject { |line| line[0] == "#" }
+    .map { |line| line.strip.split(", ") }
+    .each_with_object({}) do |record, records|
 
-  # This hash will store the final data
-  parse_data = {}
+    # Modify the `records` hash so that it contains necessary details.
+    # fetch the data
+    type = record[0].to_s
+    source = record[1].to_s
+    target = record[2].to_s
 
-  # Iterating through each element (or line) of the array (or zone file)
-  data.each do |x|
+    # Adding details in the records hash
+    records[source] = {}
+    records[source][:type] = type
+    records[source][:target] = target
 
-    # Checking for non-empty or non-commented lines
-    if x.strip != "" && x[0] != "#"
-
-      # Extracting all the three information from the single line
-      temp = x.strip.split(", ")
-
-      # If :A or :CNAME key are not present, add them with a new hash as value
-      if parse_data[temp[0].to_s] == nil
-        parse_data[temp[0].to_s] = {}
-      end
-
-      # Adding data into the parse_data hash
-      parse_data[temp[0].to_s][temp[1].to_s] = temp[2].to_s
-    end
+    # returning records
+    records
   end
-
-  # returning parse_data
-  return parse_data
 end
 
 # Function to find the path
-def resolve(records, chain, domain)
+def resolve(dns_records, lookup_chain, domain)
 
   # Fetched the keys, :A and :CNAME
-  key = records.keys
+  record = dns_records[domain]
 
-  # First check if IP is present, it will act as break condition
-  if records[key[0]][domain.to_s] != nil
-    return chain << records[key[0]][domain.to_s]
-
-    # Then check if its present in :CNAME, if not, its not available
-  elsif records[key[1]][domain.to_s] == nil
-    return ["Error: record not found for #{domain}"]
-
-    # Otherwise, call the function again with values updated
+  # Lookup
+  if (!record)
+    lookup_chain = ["Error: Record not found for #{domain}"]
+  elsif record[:type] == "CNAME"
+    lookup_chain << record[:target]
+    resolve(dns_records, lookup_chain, record[:target])
+  elsif record[:type] == "A"
+    lookup_chain << record[:target]
   else
-    return resolve(records, chain << records[key[1]][domain.to_s], records[key[1]][domain.to_s])
+    lookup_chain << "\nInvalid record type for #{domain}"
   end
 end
 
