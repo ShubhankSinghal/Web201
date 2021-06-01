@@ -1,4 +1,3 @@
-require "./connect_db.rb"
 require "./todo.rb"
 
 def get_new_todo
@@ -15,7 +14,6 @@ def get_new_todo
   }
 end
 
-connect_db!
 h = get_new_todo
 if h
   new_todo = Todo.add_task(h)
