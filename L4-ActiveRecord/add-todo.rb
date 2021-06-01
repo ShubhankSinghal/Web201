@@ -17,6 +17,6 @@ end
 h = get_new_todo
 if h
   new_todo = Todo.add_task(h)
-  puts "New todo created with id #{new_todo.id}"
+  puts "\nNew todo created with id #{new_todo.id}\n"
   Todo.show_list
 end

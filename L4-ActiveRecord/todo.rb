@@ -2,20 +2,8 @@ require "./connect_db.rb"
 connect_db!
 
 class Todo < ActiveRecord::Base
-
-  # to fetch overdue
-  def overdue?
-    due_date < Date.today
-  end
-
-  # to fetch due_today
   def due_today?
     due_date == Date.today
-  end
-
-  # to fetch due_later
-  def due_later?
-    @due_date > Date.today
   end
 
   # to format data
@@ -34,24 +22,28 @@ class Todo < ActiveRecord::Base
     puts "My Todo-list\n\n"
 
     puts "Overdue\n"
-    puts Todo.overdue.to_displayable_list
+    puts Todo.where("due_date < ?", Date.today).to_displayable_list
     puts "\n\n"
 
     puts "Due Today\n"
-    puts Todo.due_today.to_displayable_list
+    puts Todo.where("due_date = ?", Date.today).to_displayable_list
     puts "\n\n"
 
     puts "Due Later\n"
-    puts Todo.due_later.to_displayable_list
+    puts Todo.where("due_date > ?", Date.today).to_displayable_list
     puts "\n\n"
   end
 
-  def self.add_task(todo_text, due_in_days)
-    Todo.create!(todo_text: "Buy groceries", due_date: Date.today + 4, completed: false)
+  def self.add_task(todo_obj)
+    text = todo_obj[:todo_text]
+    days = todo_obj[:due_in_days]
+    Todo.create!(todo_text: text, due_date: Date.today + days, completed: false)
   end
 
-  def mark_as_complete(todo_id)
-    todo = Todo.where("id: ?", todo_id)
+  def self.mark_as_complete(todo_id)
+    todo = Todo.find_by("id = ?", todo_id)
+    todo[:completed] = true
     todo.save
+    todo
   end
 end
