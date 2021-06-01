@@ -9,41 +9,26 @@ class Todo
     @completed = completed
   end
 
-  # getter for text
-  def text?
-    @text
-  end
-
-  # getter for due_date
-  def due_date?
-    @due_date
-  end
-
-  # getter for completed
-  def completed?
-    @completed
-  end
-
   # to fetch overdue
   def overdue?
-    due_date? < Date.today
+    @due_date < Date.today
   end
 
   # to fetch due_today
   def due_today?
-    due_date? == Date.today
+    @due_date == Date.today
   end
 
   # to fetch due_later
   def due_later?
-    due_date? > Date.today
+    @due_date > Date.today
   end
 
   # to format data into required string
   def to_displayable_string
-    display_status = completed? ? "[X]" : "[ ]"
-    display_date = due_today? ? nil : due_date?
-    "#{display_status} #{text?} #{display_date}"
+    display_status = @completed ? "[X]" : "[ ]"
+    display_date = due_today? ? nil : @due_date
+    "#{display_status} #{@text} #{display_date}"
   end
 end
 
@@ -77,7 +62,6 @@ class TodosList
   # transform the data
   def to_displayable_list
     temp = @todos.map { |x| x.to_displayable_string }
-    temp.join("\n")
   end
 end
 
