@@ -61,7 +61,7 @@ class TodosList
 
   # transform the data
   def to_displayable_list
-    temp = @todos.map { |x| x.to_displayable_string }
+    @todos.map { |x| x.to_displayable_string }
   end
 end
 
