@@ -35,12 +35,7 @@ def parse_dns(raw)
     target = record[2].to_s
 
     # Adding details in the records hash
-    records[source] = {}
-    records[source][:type] = type
-    records[source][:target] = target
-
-    # returning records
-    records
+    records[source] = { type: type, target: target }
   end
 end
 
@@ -52,7 +47,7 @@ def resolve(dns_records, lookup_chain, domain)
 
   # Lookup
   if (!record)
-    lookup_chain = ["Error: Record not found for #{domain}"]
+    ["Error: Record not found for #{domain}"]
   elsif record[:type] == "CNAME"
     lookup_chain << record[:target]
     resolve(dns_records, lookup_chain, record[:target])
